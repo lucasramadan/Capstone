@@ -1,3 +1,11 @@
+# Data Directories
+clean_dssp_csv/
+dssp.data/
+
+# Data Types
+*.csv
+*.zip
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
