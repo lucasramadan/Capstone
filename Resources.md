@@ -28,5 +28,5 @@ Accurate secondary-structure prediction is a key element in the prediction of te
 * Label I ([pi helix](https://en.wikipedia.org/wiki/Pi_helix)) is very rare, due to an artifact of the original 1983 implementation of DSSP
   * A quick solution to this is to replace structural sequences of 'HHTHH' with 'IIIII' as described  [here](http://swift.cmbi.ru.nl/gv/dssp/DSSP_2.html)
 * Amino Acid 'X' is used for unknown
- * "The one-letter symbol for an undetermined amino acid is X"
- * http://www.chempep.com/ChemPep-Amino-Acid-Standard-List.htm
+ * "The one-letter symbol for an undetermined amino acid is X" from [here](http://www.chempep.com/ChemPep-Amino-Acid-Standard-List.htm)
+ * "I've also seen phosphorylated residues marked as 'X'. Another option is may be the 21st amino-acid, Selenocysteine" from [here](http://www.bioinformatics.org/pipermail/bbb/2002-April/000644.html)
