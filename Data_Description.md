@@ -34,7 +34,8 @@
 
 **verbose_dssp_csv/**
 * converted proteins to have context
-* full feature space utilized 
+* full feature space utilized
+  * (21 amino acid symbols + 26 disulfide bridge symbols) x n positional arguments
 * for use with Neural Network approaches
 
 ![Verbose DSSP CSV Example](imgs/verbose_dssp_csv.png)
