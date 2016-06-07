@@ -48,6 +48,6 @@
 * feature space restructured as "amino images"
 * saved as .npy files
 
-![Tensor DSSP npy Example](imgs/tensor_dssp_npy.png)
+![Tensor DSSP npy Example](imgs/tensor_dssp_csv.png)
 
 ----------------
