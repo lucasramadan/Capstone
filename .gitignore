@@ -5,6 +5,7 @@ dssp.data/
 # Data Types
 *.csv
 *.zip
+*.npy
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
