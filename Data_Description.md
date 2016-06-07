@@ -47,8 +47,16 @@
 * full feature space utlized
 * feature space restructured as "amino images"
 * saved as .npy files
-* NOTE: example image below shows an individual amino image, not the full tensor
+* **NOTE**: example image below shows an individual amino image, not the full tensor
 
 ![Tensor DSSP npy Example](imgs/tensor_dssp_csv.png)
+
+----------------
+
+**scaled_tensor_dssp_npy/**
+* Scale the tensor data by subtracting the mean of each amino image and dividing by standard deviation
+* **NOTE**: example image below shows an individual amino image, not the full tensor
+
+![Scaled Tensor DSSP npy Example](imgs/scaled_tensor_dssp.png)
 
 ----------------
