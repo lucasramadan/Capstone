@@ -60,3 +60,9 @@
 ![Scaled Tensor DSSP npy Example](imgs/scaled_tensor_dssp.png)
 
 ----------------
+
+**Amino Image**
+
+> ![Amino Image Example](imgs/amino_image_1i3n.png)
+
+----------------
