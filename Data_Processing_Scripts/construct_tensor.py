@@ -10,6 +10,10 @@ __author__ = 'Lucas Ramadan'
 # unpack arguments
 _, input_dir, output_dir = argv
 
+# check if output_dir actually exists
+if not os.path.exists(output_dir):
+    os.makedirs(output_dir)
+
 # get files
 topdir, _, files = next(os.walk(input_dir))
 n_files = len(files) - 1 # save this for progress printing
@@ -39,7 +43,7 @@ for i, fi in enumerate(files):
     p_id = fi[:fi.index('.')]
 
     # make filename for raw tensor
-    fn = '../tensor_dssp_npy/' + p_id + '.npy'
+    fn = output_dir + p_id + '.npy'
 
     # finally, save the raw tensor
     np.save(fn, data)
@@ -52,7 +56,7 @@ for i, fi in enumerate(files):
     data = (data-mu)/sigma
 
     # save the scaled tensor
-    fn = '../scaled_tensor_dssp_npy/' + p_id + '.npy'
+    fn = 'scaled_' + output_dir + p_id + '.npy'
     np.save(fn, data)
 
 print('\ncompleted')

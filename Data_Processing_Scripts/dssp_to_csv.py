@@ -10,6 +10,10 @@ __author__ = 'Lucas Ramadan'
 # unpacking of sys arguments
 _, dssp_dir = argv
 
+# check if output_dir actually exists
+if not os.path.exists(output_dir):
+    os.makedirs(output_dir)
+
 # helper functions
 def row_splitter(l):
     """
@@ -120,6 +124,6 @@ for i, fi in enumerate(files):
     # construct the dataframe
     protein_df = pd.DataFrame(clean_protein, columns=header)
     # construct filename
-    fn = 'raw_dssp_csv/' + fi[:fi.find('.')] + '.csv'
+    fn = output_dir + fi[:fi.find('.')] + '.csv'
     # write to csv
     protein_df.to_csv(fn, index=False)

@@ -11,6 +11,10 @@ __author__ = 'Lucas Ramadan'
 # unpack arguments
 _, input_dir, output_dir = argv
 
+# check if output_dir actually exists
+if not os.path.exists(output_dir):
+    os.makedirs(output_dir)
+
 # helper functions
 def construct_verbose(row):
     """
@@ -114,7 +118,7 @@ for i, fi in enumerate(files):
     full_df = construct_verbose_df(data, n=w)
 
     # write the df
-    fn = '../verbose_dssp_csv/' + fi
+    fn = output_dir + fi
     full_df.to_csv(fn, index=False)
 
 print('\ncompleted')

@@ -10,6 +10,10 @@ __author__ = 'Lucas Ramadan'
 # unpack arguments
 _, input_dir, output_dir = argv
 
+# check if output_dir actually exists
+if not os.path.exists(output_dir):
+    os.makedirs(output_dir)
+
 # helper function to make positional proteins
 def construct_positional(seq, w=5, header=True):
     """
@@ -68,7 +72,7 @@ for i, fi in enumerate(files):
         pos_df = pd.DataFrame(positional[1:], columns=positional[0])
 
         # construct filename
-        fn = '../positional_dssp_csv/(' + str(spacing) + ')_' + fi
+        fn = output_dir+'(' + str(spacing) + ')_' + fi
 
         # write to file
         pos_df.to_csv(fn, index=False)

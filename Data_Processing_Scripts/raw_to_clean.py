@@ -12,7 +12,11 @@ warnings.filterwarnings('ignore')
 __author__ = 'Lucas Ramadan'
 
 # unpack arguments
-_, input_dir = argv
+_, input_dir, output_dir = argv
+
+# check if output_dir actually exists
+if not os.path.exists(output_dir):
+    os.makedirs(output_dir)
 
 # helper function to fix HHTHH structure pattern
 def replace_pi(l):
@@ -55,4 +59,4 @@ for i, fi in enumerate(files):
     df['SS'] = df['SS'].apply(lambda aa: 'C' if aa == '?' else aa)
 
     # write to csv
-    df.to_csv('../clean_dssp_csv/'+fi, index=False)
+    df.to_csv(output_dir+fi, index=False)
