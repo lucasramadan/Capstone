@@ -8,7 +8,7 @@ from sys import argv
 __author__ = 'Lucas Ramadan'
 
 # unpacking of sys arguments
-_, dssp_dir = argv
+_, dssp_dir, output_dir = argv
 
 # check if output_dir actually exists
 if not os.path.exists(output_dir):
@@ -110,20 +110,26 @@ header = make_header_row()
 
 # go through each file
 for i, fi in enumerate(files):
-    perc_complete = round(i*100.0/n_files, 2)
     # show progress
+    perc_complete = round(i*100.0/n_files, 2)
     print('\rProgress: ' + str(perc_complete) + '%', end='')
+    
     # open the .dssp file
     with open(topdir+fi) as f:
         data = f.read()
+    
     # find the sequence section
-    protein = data[data.find('#'):].split('\n')
+    protein = data[data.find('#  RESIDUE'):].split('\n')
+    
     # go through and get each column of the row of data
     # skip the first row (old header) and last row (artifact '\n')
     clean_protein = [row_splitter(r) for r in protein[1:-1]]
+    
     # construct the dataframe
     protein_df = pd.DataFrame(clean_protein, columns=header)
+    
     # construct filename
     fn = output_dir + fi[:fi.find('.')] + '.csv'
+    
     # write to csv
     protein_df.to_csv(fn, index=False)
