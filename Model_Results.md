@@ -411,7 +411,7 @@ Epoch 50/50
 ```
 
 ##### Training
-![FFNN-3L-2000-BN-SReLU-DO](FFNN-3L-2000-BN-SReLU-DO.png)
+![FFNN-3L-2000-BN-SReLU-DO](trainings/imgs/FFNN-3L-2000-BN-SReLU-DO.png)
 
 
 ##### Summary:
