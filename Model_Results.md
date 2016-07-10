@@ -7,7 +7,7 @@
 
 ## Feed-Forward Networks
 
-### FF-2L-500-SIG
+### FFNN-2L-500-SIG
 
 ##### Code:
 
@@ -64,7 +64,7 @@ Epoch 5/5
 
 ------- 
 
-### FF-2L-500-ELU-BN-DO
+### FFNN-2L-500-ELU-BN-DO
 
 ##### Code:
 
@@ -129,11 +129,11 @@ Epoch 5/5
 ```
 
 ##### Summary:
-> Training improvements over FF-2L-500-S, due to BatchNormalization, but will likely benefit from complexity increases in architecture. 
+> Training improvements over FFNN-2L-500-S, due to BatchNormalization, but will likely benefit from complexity increases in architecture. 
 
 ----- 
 
-### FF-3L-1000-ELU-BN-DO
+### FFNN-3L-1000-ELU-BN-DO
 
 ##### Code:
 
@@ -244,7 +244,7 @@ Epoch 20/20
 
 -----
 
-### FF-3L-2000-BN-SReLU-DO
+### FFNN-3L-2000-BN-SReLU-DO
 
 ##### Code:
 
@@ -410,12 +410,206 @@ Epoch 50/50
 161412/161412 [=====================] - 876s - loss: 0.1627 - acc: 0.9497 - val_loss: 0.5247 - val_acc: 0.8953
 ```
 
+##### Training
+![FFNN-3L-2000-BN-SReLU-DO](FFNN-3L-2000-BN-SReLU-DO.png)
+
+
+##### Summary:
+> Likely the best model I've produced so far, SReLU activation appears to make a significant difference. Increased layer width of 2000 (previously 1000) appears to improve seperability of observations, though increases past 2000 nodes have not been tested. 
+
+-----
+
+### FFNN-4L-2000-BN-SReLU-DO
+
+##### Code:
+
+```
+# data dimensions
+n_input, n_hidden, n_ouput = 912, 2000, 7
+
+# instantiate model
+model_4LW = Sequential()
+
+# first layer, n_input nodes, BatchNormalized, SReLU, Dropout
+model_4LW.add(Dense(input_dim=n_input, output_dim=n_hidden))
+model_4LW.add(BatchNormalization())
+model_4LW.add(SReLU())
+model_4LW.add(Dropout(0.5))
+
+# second layer, n_hidden nodes, BatchNormalized, SReLU, Dropout
+model_4LW.add(Dense(input_dim=n_hidden, output_dim=n_hidden))
+model_4LW.add(BatchNormalization())
+model_4LW.add(SReLU())
+model_4LW.add(Dropout(0.5))
+
+# third layer, n_hidden nodes, BatchNormalized, SReLU, Dropout
+model_4LW.add(Dense(input_dim=n_hidden, output_dim=n_hidden))
+model_4LW.add(BatchNormalization())
+model_4LW.add(SReLU())
+model_4LW.add(Dropout(0.5))
+
+# fourth layer, n_output nodes, BatchNormalized, SoftMax
+model_4LW.add(Dense(input_dim=n_hidden, output_dim=n_output))
+model_4LW.add(BatchNormalization())
+model_4LW.add(Activation("softmax"))
+```
+
+##### Architecture:
+
+```
+____________________________________________________________________________________________________
+Layer (type)                       Output Shape        Param #     Connected to                     
+====================================================================================================
+dense_3 (Dense)                    (None, 2000)        1826000     dense_input_3[0][0]              
+____________________________________________________________________________________________________
+batchnormalization_2 (BatchNormaliz(None, 2000)        4000        dense_3[0][0]                    
+____________________________________________________________________________________________________
+srelu_2 (SReLU)                    (None, 2000)        8000        batchnormalization_2[0][0]       
+____________________________________________________________________________________________________
+dropout_2 (Dropout)                (None, 2000)        0           srelu_2[0][0]                    
+____________________________________________________________________________________________________
+dense_4 (Dense)                    (None, 2000)        4002000     dropout_2[0][0]                  
+____________________________________________________________________________________________________
+batchnormalization_3 (BatchNormaliz(None, 2000)        4000        dense_4[0][0]                    
+____________________________________________________________________________________________________
+srelu_3 (SReLU)                    (None, 2000)        8000        batchnormalization_3[0][0]       
+____________________________________________________________________________________________________
+dropout_3 (Dropout)                (None, 2000)        0           srelu_3[0][0]                    
+____________________________________________________________________________________________________
+dense_5 (Dense)                    (None, 2000)        4002000     dropout_3[0][0]                  
+____________________________________________________________________________________________________
+batchnormalization_4 (BatchNormaliz(None, 2000)        4000        dense_5[0][0]                    
+____________________________________________________________________________________________________
+srelu_4 (SReLU)                    (None, 2000)        8000        batchnormalization_4[0][0]       
+____________________________________________________________________________________________________
+dropout_4 (Dropout)                (None, 2000)        0           srelu_4[0][0]                    
+____________________________________________________________________________________________________
+dense_6 (Dense)                    (None, 7)           14007       dropout_4[0][0]                  
+____________________________________________________________________________________________________
+batchnormalization_5 (BatchNormaliz(None, 7)           14          dense_6[0][0]                    
+____________________________________________________________________________________________________
+activation_1 (Activation)          (None, 7)           0           batchnormalization_5[0][0]       
+====================================================================================================
+Total params: 9880021
+____________________________________________________________________________________________________
+```
+
+##### Performance:
+
+```
+Train on 161412 samples, validate on 53805 samples
+Epoch 1/20
+161412/161412 [=====================] - 1486s - loss: 1.1433 - acc: 0.6062 - val_loss: 0.8481 - val_acc: 0.7195
+Epoch 2/20
+161412/161412 [=====================] - 1539s - loss: 0.8306 - acc: 0.7259 - val_loss: 0.6312 - val_acc: 0.8020
+Epoch 3/20
+161412/161412 [=====================] - 1540s - loss: 0.6801 - acc: 0.7820 - val_loss: 0.5654 - val_acc: 0.8299
+Epoch 4/20
+161412/161412 [=====================] - 1535s - loss: 0.5780 - acc: 0.8178 - val_loss: 0.5053 - val_acc: 0.8514
+Epoch 5/20
+161412/161412 [=====================] - 1534s - loss: 0.5063 - acc: 0.8415 - val_loss: 0.4736 - val_acc: 0.8619
+Epoch 6/20
+161412/161412 [=====================] - 1539s - loss: 0.4504 - acc: 0.8604 - val_loss: 0.4680 - val_acc: 0.8683
+Epoch 7/20
+161412/161412 [=====================] - 1536s - loss: 0.4099 - acc: 0.8732 - val_loss: 0.4563 - val_acc: 0.8713
+Epoch 8/20
+161412/161412 [=====================] - 1542s - loss: 0.3753 - acc: 0.8837 - val_loss: 0.4593 - val_acc: 0.8775
+Epoch 9/20
+161412/161412 [=====================] - 1541s - loss: 0.3474 - acc: 0.8919 - val_loss: 0.4517 - val_acc: 0.8797
+Epoch 10/20
+161412/161412 [=====================] - 1540s - loss: 0.3265 - acc: 0.8978 - val_loss: 0.4621 - val_acc: 0.8840
+Epoch 11/20
+161412/161412 [=====================] - 1540s - loss: 0.3047 - acc: 0.9055 - val_loss: 0.4420 - val_acc: 0.8879
+Epoch 12/20
+161412/161412 [=====================] - 1542s - loss: 0.2924 - acc: 0.9092 - val_loss: 0.4432 - val_acc: 0.8883
+Epoch 13/20
+161412/161412 [=====================] - 1544s - loss: 0.2796 - acc: 0.9123 - val_loss: 0.4492 - val_acc: 0.8919
+Epoch 14/20
+161412/161412 [=====================] - 1546s - loss: 0.2679 - acc: 0.9161 - val_loss: 0.4411 - val_acc: 0.8931
+Epoch 15/20
+161412/161412 [=====================] - 1546s - loss: 0.2566 - acc: 0.9198 - val_loss: 0.4548 - val_acc: 0.8924
+Epoch 16/20
+161412/161412 [=====================] - 1542s - loss: 0.2509 - acc: 0.9212 - val_loss: 0.4360 - val_acc: 0.8949
+Epoch 17/20
+161412/161412 [=====================] - 1548s - loss: 0.2416 - acc: 0.9245 - val_loss: 0.4429 - val_acc: 0.8960
+Epoch 18/20
+161412/161412 [=====================] - 1539s - loss: 0.2333 - acc: 0.9280 - val_loss: 0.4665 - val_acc: 0.8944
+Epoch 19/20
+161412/161412 [=====================] - 1547s - loss: 0.2288 - acc: 0.9288 - val_loss: 0.4436 - val_acc: 0.8975
+Epoch 20/20
+161412/161412 [=====================] - 1544s - loss: 0.2202 - acc: 0.9318 - val_loss: 0.4542 - val_acc: 0.8962
+```
+
+##### Summary:
+> In only 20 epochs, appears to be comperable to 50 epochs of training with our FFNN-3L-2000-BN-SReLU-DO. Could run for more epochs. 
+
+-----
+
+### CNN
+
+##### Code:
+
+```
+
+```
+
+##### Architecture:
+
+```
+
+```
+
+##### Performance:
+
+```
+Epoch 1/20
+201506/201506 [=====================] - 164s - loss: 1.3747 - acc: 0.4945 - val_loss: 1.3523 - val_acc: 0.5086
+Epoch 2/20
+201506/201506 [=====================] - 166s - loss: 1.3397 - acc: 0.5104 - val_loss: 1.3116 - val_acc: 0.5244
+Epoch 3/20
+201506/201506 [=====================] - 165s - loss: 1.3108 - acc: 0.5240 - val_loss: 1.2689 - val_acc: 0.5452
+Epoch 4/20
+201506/201506 [=====================] - 166s - loss: 1.2878 - acc: 0.5359 - val_loss: 1.2548 - val_acc: 0.5529
+Epoch 5/20
+201506/201506 [=====================] - 166s - loss: 1.2672 - acc: 0.5450 - val_loss: 1.2243 - val_acc: 0.5656
+Epoch 6/20
+201506/201506 [=====================] - 166s - loss: 1.2504 - acc: 0.5532 - val_loss: 1.2147 - val_acc: 0.5713
+Epoch 7/20
+201506/201506 [=====================] - 167s - loss: 1.2360 - acc: 0.5589 - val_loss: 1.1979 - val_acc: 0.5770
+Epoch 8/20
+201506/201506 [=====================] - 166s - loss: 1.2204 - acc: 0.5674 - val_loss: 1.1903 - val_acc: 0.5838
+Epoch 9/20
+201506/201506 [=====================] - 166s - loss: 1.2067 - acc: 0.5726 - val_loss: 1.1619 - val_acc: 0.5937
+Epoch 10/20
+201506/201506 [=====================] - 166s - loss: 1.1943 - acc: 0.5795 - val_loss: 1.1551 - val_acc: 0.5991
+Epoch 11/20
+201506/201506 [=====================] - 167s - loss: 1.1822 - acc: 0.5844 - val_loss: 1.1446 - val_acc: 0.6046
+Epoch 12/20
+201506/201506 [=====================] - 167s - loss: 1.1682 - acc: 0.5900 - val_loss: 1.1226 - val_acc: 0.6147
+Epoch 13/20
+201506/201506 [=====================] - 167s - loss: 1.1564 - acc: 0.5952 - val_loss: 1.1280 - val_acc: 0.6164
+Epoch 14/20
+201506/201506 [=====================] - 166s - loss: 1.1439 - acc: 0.6018 - val_loss: 1.1034 - val_acc: 0.6244
+Epoch 15/20
+201506/201506 [=====================] - 167s - loss: 1.1323 - acc: 0.6064 - val_loss: 1.0923 - val_acc: 0.6286
+Epoch 16/20
+201506/201506 [=====================] - 168s - loss: 1.1219 - acc: 0.6104 - val_loss: 1.1006 - val_acc: 0.6268
+Epoch 17/20
+201506/201506 [=====================] - 166s - loss: 1.1091 - acc: 0.6168 - val_loss: 1.0701 - val_acc: 0.6410
+Epoch 18/20
+201506/201506 [=====================] - 167s - loss: 1.0976 - acc: 0.6212 - val_loss: 1.0661 - val_acc: 0.6422
+Epoch 19/20
+201506/201506 [=====================] - 166s - loss: 1.0886 - acc: 0.6253 - val_loss: 1.0558 - val_acc: 0.6501
+Epoch 20/20
+201506/201506 [=====================] - 167s - loss: 1.0787 - acc: 0.6293 - val_loss: 1.0371 - val_acc: 0.6553
+```
+
 ##### Summary:
 > 
 
 -----
 
-### FF
+### RNN
 
 ##### Code:
 
@@ -440,7 +634,7 @@ Epoch 50/50
 
 -----
 
-### FF
+### RNN
 
 ##### Code:
 
@@ -465,7 +659,7 @@ Epoch 50/50
 
 -----
 
-### FF
+### RNN
 
 ##### Code:
 
