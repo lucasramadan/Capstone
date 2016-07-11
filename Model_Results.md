@@ -1,11 +1,9 @@
 # Model Nomenclature
 
-**Note:** All models trained with 19 spaced verbose data, *unless* otherwise stated
-* Data has a feature space size of 912
-* Labels have 7 possible classes (NOT 8)
-  * Dropped 'C' class, because these are really "unknown" structure assignments from DSSP
-
 ## Feed-Forward Networks
+
+#### Data
+* 19_spaced_verbose
 
 ### FFNN-2L-500-SIG
 
@@ -545,6 +543,12 @@ Epoch 20/20
 
 -----
 
+## Convolutional Networks
+
+#### Data
+* 19_spaced_tensor_data (4D Tensor)
+* shape: (n_proteins, len_protein, positions, aminos)
+
 ### CNN
 
 ##### Code:
@@ -609,7 +613,77 @@ Epoch 20/20
 
 -----
 
-### RNN
+## Recurrent Networks
+
+#### Data
+* 19_spaced_masked_verbose (3D Tensor)
+* shape: (n_proteins, max_len, features)
+
+### RNN-1L-1000-MASK
+
+##### Code:
+
+```
+# data dimensions
+n_input = (8462, 912)
+n_output = 8
+
+# instantiate model
+model = Sequential()
+
+# first (output) layer
+model.add(Masking(mask_value = 0, input_shape = n_input))
+model.add(SimpleRNN(n_output, return_sequences = True))
+model.add(Activation('softmax'))
+```
+
+##### Architecture:
+
+```
+____________________________________________________________________________________________________
+Layer (type)                       Output Shape        Param #     Connected to                     
+====================================================================================================
+masking_2 (Masking)                (None, 8462, 912)   0           masking_input_2[0][0]            
+____________________________________________________________________________________________________
+simplernn_1 (SimpleRNN)            (None, 8462, 8)     7368        masking_2[0][0]                  
+____________________________________________________________________________________________________
+activation_1 (Activation)          (None, 8462, 8)     0           simplernn_1[0][0]                
+====================================================================================================
+Total params: 7368
+____________________________________________________________________________________________________
+```
+
+##### Performance:
+
+```
+Epoch 1/10
+276/276 [======================] - 60s - loss: 1.8773 - acc: 0.9373 - val_loss: 1.7980 - val_acc: 0.9444
+Epoch 2/10
+276/276 [======================] - 60s - loss: 1.7714 - acc: 0.9413 - val_loss: 1.7385 - val_acc: 0.9473
+Epoch 3/10
+276/276 [======================] - 60s - loss: 1.7164 - acc: 0.9431 - val_loss: 1.7015 - val_acc: 0.9473
+Epoch 4/10
+276/276 [======================] - 59s - loss: 1.6858 - acc: 0.9433 - val_loss: 1.6752 - val_acc: 0.9480
+Epoch 5/10
+276/276 [======================] - 60s - loss: 1.6607 - acc: 0.9442 - val_loss: 1.6538 - val_acc: 0.9485
+Epoch 6/10
+276/276 [======================] - 60s - loss: 1.6411 - acc: 0.9453 - val_loss: 1.6388 - val_acc: 0.9492
+Epoch 7/10
+276/276 [======================] - 60s - loss: 1.6208 - acc: 0.9461 - val_loss: 1.6230 - val_acc: 0.9499
+Epoch 8/10
+276/276 [======================] - 59s - loss: 1.6057 - acc: 0.9465 - val_loss: 1.6113 - val_acc: 0.9506
+Epoch 9/10
+276/276 [======================] - 59s - loss: 1.5984 - acc: 0.9478 - val_loss: 1.6015 - val_acc: 0.9514
+Epoch 10/10
+276/276 [======================] - 60s - loss: 1.5857 - acc: 0.9484 - val_loss: 1.5933 - val_acc: 0.9519
+```
+
+##### Summary:
+> 
+
+-----
+
+### RNN-2L-1000-ELU-BN-DO
 
 ##### Code:
 
@@ -634,32 +708,7 @@ Epoch 20/20
 
 -----
 
-### RNN
-
-##### Code:
-
-```
-
-```
-
-##### Architecture:
-
-```
-
-```
-
-##### Performance:
-
-```
-
-```
-
-##### Summary:
-> 
-
------
-
-### RNN
+### LSTM-3L-1000-ELU-BN-DO
 
 ##### Code:
 
