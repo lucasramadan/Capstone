@@ -1,5 +1,11 @@
 # Data Description
 
+## Two Datasets
+* Capstone-Small: 346 proteins, 268,676 amino acids
+* Capstone-Large: 116,190 proteins, 158,023,256 amino acids
+
+## Files
+
 **dssp.data/**
 * original dssp files from PDB
 
